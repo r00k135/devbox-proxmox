@@ -49,6 +49,7 @@ fi
 CONFIG_FILE="/etc/pve/lxc/${CONTAINER_ID}.conf"
 {
     echo "lxc.apparmor.profile: unconfined"
+    echo "lxc.cap.drop:"
     echo "lxc.cgroup2.devices.allow: c 10:229 rwm"
     echo "lxc.mount.entry: /dev/fuse dev/fuse none bind,create=file"
 } >> "$CONFIG_FILE"
