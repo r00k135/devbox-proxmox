@@ -17,6 +17,10 @@ BASE_CONTAINER_NAME="devbox"
 TEMPLATE="local:vztmpl/ubuntu-24.04-standard_24.04-2_amd64.tar.zst"
 NETWORK_BRIDGE="vmbr0"
 START_CONTAINER_ID=200
+CORES=2
+MEMORY=1024
+SWAP=512
+ROOTFS_SIZE=16
 # append the current timestamp in a human-readable format to the container name to ensure uniqueness
 TIMESTAMP=$(date +%y%m%d%H%M%S)
 CONTAINER_NAME="${BASE_CONTAINER_NAME}-${TIMESTAMP}"
@@ -35,7 +39,7 @@ done
 pct create "$CONTAINER_ID" "$TEMPLATE" \
     --hostname "$CONTAINER_NAME" \
     --net0 name=eth0,bridge=$NETWORK_BRIDGE,ip=dhcp \
-    --cores 2 --memory 1024 --swap 512 --rootfs local-lvm:16 --unprivileged 0
+    --cores $CORES --memory $MEMORY --swap $SWAP --rootfs local-lvm:$ROOTFS_SIZE --unprivileged 0
 if [ $? -ne 0 ]; then
     echo "Failed to create container $CONTAINER_NAME"
     exit 1
@@ -59,3 +63,16 @@ if [ $? -ne 0 ]; then
     echo "Failed to start container $CONTAINER_NAME"
     exit 1
 fi
+
+# output summary information about the new container
+echo "--------------------------------------------------------------"
+echo "Container $CONTAINER_NAME created and started successfully!"
+echo "Container ID: $CONTAINER_ID"
+echo "Hostname: $CONTAINER_NAME"
+echo "Network: $NETWORK_BRIDGE (DHCP)"
+echo "Cores: $CORES"
+echo "Memory: $MEMORY MB"
+echo "Swap: $SWAP MB"
+echo "Root filesystem: local-lvm:$ROOTFS_SIZE GB"
+echo ""
+echo "To access the container, use: pct enter $CONTAINER_ID"
