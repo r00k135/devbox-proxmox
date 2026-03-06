@@ -7,6 +7,11 @@
 
 set -e
 
+# If invoked with sh/dash, restart with bash so bash-only syntax works.
+if [ -z "${BASH_VERSION:-}" ]; then
+    exec /usr/bin/env bash "$0" "$@"
+fi
+
 # check if the script is being run as root
 if [ "$EUID" -ne 0 ]; then
     echo "Please run this script as root"
@@ -28,7 +33,6 @@ fi
 
 # install packages, including packages for docker, copilot cli and vscode serverdependencies
 PACKAGES=(
-    curl
     git
     vim
     build-essential
@@ -79,8 +83,7 @@ rm get-docker.sh
 usermod -aG docker devbox
 
 # install copilot cli
-curl -fsSL https://aka.ms/copilot-cli/install.sh -o install-copilot.sh
-sh install-copilot.sh
+curl -fsSL https://gh.io/copilot-install | bash
 # check the script installed copilot correctly
 if ! command -v copilot &> /dev/null; then
     echo "Copilot CLI installation failed"
