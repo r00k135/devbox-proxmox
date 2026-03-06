@@ -1,4 +1,4 @@
-#!/usr/bvin/env bash
+#!/usr/bin/env bash
 ###############################################################################
 # This script is intended to be run from the proxmox host to provision a new 
 # devbox container, the script should be run as root

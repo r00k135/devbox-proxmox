@@ -10,6 +10,13 @@ Also system configuration such as:
 - ssh config such allowing tunneling
 - sudo setup to run docker commands as unprivilaged user
 
+## Provion Proxmox Container
+```
+wget -q https://github.com/r00k135/devbox-proxmox/raw/refs/heads/main/proxmox-provision.sh -O proxmox-provision.sh
+chmod +x ./proxmox-provision.sh
+./proxmox-provision.sh
+```
+
 ## Devbox customisation
 ```
 wget -q https://github.com/r00k135/devbox-proxmox/raw/refs/heads/main/devbox-config.sh -O devbox-config.sh
