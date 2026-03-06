@@ -64,6 +64,10 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+# wait for the container to start and retrieve its IP address
+echo "Waiting for container $CONTAINER_NAME to start..."
+sleep 5
+
 CONTAINERS_IP=$(pct exec "$CONTAINER_ID" -- sh -lc "hostname -I | awk '{print \$1}'")
 if [ -z "$CONTAINERS_IP" ]; then
     echo "Failed to retrieve IP address for container $CONTAINER_NAME"
