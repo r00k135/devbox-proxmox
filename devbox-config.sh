@@ -89,3 +89,7 @@ if ! command -v copilot &> /dev/null; then
     echo "Copilot CLI installation failed"
     exit 1
 fi
+
+# reboot the container to ensure all changes take effect
+echo "Rebooting the container to apply changes..."
+reboot
