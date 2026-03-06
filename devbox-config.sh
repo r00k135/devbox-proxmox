@@ -59,6 +59,11 @@ fi
 usermod -aG sudo devbox
 # allow the devbox user to run sudo commands without a password
 echo "devbox ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+# set the devbox user's password to "devbox" (you should change this after the first login)
+echo "devbox:devbox" | chpasswd
+# add a hushlogin file to the devbox user's home directory to disable the message of the day
+touch /home/devbox/.hushlogin
+chown devbox:devbox /home/devbox/.hushlogin
 
 # install docker using the convenience script
 curl -fsSL https://get.docker.com -o get-docker.sh
