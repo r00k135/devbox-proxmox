@@ -90,6 +90,10 @@ if ! command -v copilot &> /dev/null; then
     exit 1
 fi
 
+# Create a copilot alias for the devbox user which will execute the copilot cli command like so: copilot --allow-tool 'write' --allow-tool 'shell' --deny-tool 'shell(git:*)' --allow-all-paths --allow-all-urls
+echo "alias cli='copilot --allow-tool \"write\" --allow-tool \"shell\" --deny-tool \"shell(git:*)\" --allow-all-paths --allow-all-urls'" >> /home/devbox/.bashrc
+chown devbox:devbox /home/devbox/.bashrc
+
 # reboot the container to ensure all changes take effect
 echo "Rebooting the container to apply changes..."
 reboot
