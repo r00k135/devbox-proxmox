@@ -85,7 +85,7 @@ usermod -aG docker devbox
 # install copilot cli
 curl -fsSL https://gh.io/copilot-install | bash
 # check the script installed copilot correctly
-if ! command -v copilot &> /dev/null; then
+if [ "$?" -ne 0 ]; then
     echo "Copilot CLI installation failed"
     exit 1
 fi
