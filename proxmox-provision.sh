@@ -64,7 +64,7 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-$CONTAINERS_IP=$(pct exec "$CONTAINER_ID" -- sh -lc "hostname -I | awk '{print \$1}'")
+CONTAINERS_IP=$(pct exec "$CONTAINER_ID" -- sh -lc "hostname -I | awk '{print \$1}'")
 if [ -z "$CONTAINERS_IP" ]; then
     echo "Failed to retrieve IP address for container $CONTAINER_NAME"
     exit 1
