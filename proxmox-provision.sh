@@ -64,6 +64,12 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+$CONTAINERS_IP=$(pct exec "$CONTAINER_ID" -- sh -lc "hostname -I | awk '{print \$1}'")
+if [ -z "$CONTAINERS_IP" ]; then
+    echo "Failed to retrieve IP address for container $CONTAINER_NAME"
+    exit 1
+fi
+
 # output summary information about the new container
 echo "--------------------------------------------------------------"
 echo "Container $CONTAINER_NAME created and started successfully!"
@@ -74,5 +80,6 @@ echo "Cores: $CORES"
 echo "Memory: $MEMORY MB"
 echo "Swap: $SWAP MB"
 echo "Root filesystem: local-lvm:$ROOTFS_SIZE GB"
+echo "Containers DHCP IP address: $CONTAINERS_IP"
 echo ""
 echo "To access the container, use: pct enter $CONTAINER_ID"
