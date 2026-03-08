@@ -22,8 +22,10 @@ MEMORY=1024
 SWAP=512
 ROOTFS_SIZE=16
 # append the current timestamp in a human-readable format to the container name to ensure uniqueness
-TIMESTAMP=$(date +%y%m%d%H%M%S)
-CONTAINER_NAME="${BASE_CONTAINER_NAME}-${TIMESTAMP}"
+TIMESTAMP=$(date +%Y%m%d%H%M%S)
+# Convert the timestamp to hex and take the last 5 characters to ensure the container name is unique
+TIMESTAMP_HEX=$(printf '%x' "$TIMESTAMP" | tail -c 5)
+CONTAINER_NAME="${BASE_CONTAINER_NAME}-${TIMESTAMP_HEX}"
 # check if a container with the same name already exists, if it does, exit with an error
 if pct list | grep -q "$CONTAINER_NAME"; then
     echo "A container with the name $CONTAINER_NAME already exists, please choose a different name"
@@ -75,6 +77,15 @@ if [ -z "$CONTAINERS_IP" ]; then
     exit 1
 fi
 
+# check the container name with .lan on the end is available via DNS linked to DHCP leases from nameserver 192.168.0.1
+CONTAINER_DNS_NAME_VALID=$(nslookup "$CONTAINER_NAME.lan" 192.168.0.1 2>&1 | grep -q "Address:")
+if ! $CONTAINER_DNS_NAME_VALID; then
+    echo "Failed to resolve $CONTAINER_NAME.lan via DNS, please check your DHCP leases and nameserver configuration"
+    exit 1
+else
+    echo "Container $CONTAINER_NAME is available via DNS as $CONTAINER_NAME.lan"
+fi
+
 # output summary information about the new container
 echo "--------------------------------------------------------------"
 echo "Container $CONTAINER_NAME created and started successfully!"
@@ -86,5 +97,6 @@ echo "Memory: $MEMORY MB"
 echo "Swap: $SWAP MB"
 echo "Root filesystem: local-lvm:$ROOTFS_SIZE GB"
 echo "Containers DHCP IP address: $CONTAINERS_IP"
+echo "Container DNS name: $CONTAINER_DNS_NAME_VALID"
 echo ""
 echo "To access the container, use: pct enter $CONTAINER_ID"
