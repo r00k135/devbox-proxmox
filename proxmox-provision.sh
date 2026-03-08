@@ -18,7 +18,7 @@ TEMPLATE="local:vztmpl/ubuntu-24.04-standard_24.04-2_amd64.tar.zst"
 NETWORK_BRIDGE="vmbr0"
 START_CONTAINER_ID=200
 CORES=2
-MEMORY=1024
+MEMORY=2048
 SWAP=512
 ROOTFS_SIZE=16
 # append the current timestamp in a human-readable format to the container name to ensure uniqueness
