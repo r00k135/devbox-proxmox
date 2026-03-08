@@ -87,6 +87,7 @@ else
 fi
 
 # output summary information about the new container
+echo ""
 echo "--------------------------------------------------------------"
 echo "Container $CONTAINER_NAME created and started successfully!"
 echo "Container ID: $CONTAINER_ID"
@@ -97,6 +98,10 @@ echo "Memory: $MEMORY MB"
 echo "Swap: $SWAP MB"
 echo "Root filesystem: local-lvm:$ROOTFS_SIZE GB"
 echo "Containers DHCP IP address: $CONTAINERS_IP"
-echo "Container DNS name: $CONTAINER_DNS_NAME_VALID"
+if $CONTAINER_DNS_NAME_VALID; then
+    echo "Container DNS name: $CONTAINER_NAME.lan"
+else
+    echo "Container DNS name: Not available via DNS, please check your DHCP leases and nameserver configuration"
+fi
 echo ""
 echo "To access the container, use: pct enter $CONTAINER_ID"

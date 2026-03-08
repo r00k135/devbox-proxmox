@@ -94,6 +94,14 @@ fi
 echo "alias cli='copilot --allow-tool \"write\" --allow-tool \"shell\" --deny-tool \"shell(git:*)\" --allow-all-paths --allow-all-urls'" >> /home/devbox/.bashrc
 chown devbox:devbox /home/devbox/.bashrc
 
+# print out the ip address of the container for reference
+CONTAINERS_IP=$(hostname -I | awk '{print $1}')
+echo "Devbox IP address: $CONTAINERS_IP"
+
+# update the message displayed on the console before login to include the IP address (dynamically) of the container
+echo -e "\nWelcome to your Devbox! The IP address of this container is: \\4" >> /etc/issue
+
+
 # reboot the container to ensure all changes take effect
 echo "Rebooting the container to apply changes..."
 reboot
