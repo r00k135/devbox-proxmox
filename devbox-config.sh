@@ -99,7 +99,7 @@ CONTAINERS_IP=$(hostname -I | awk '{print $1}')
 echo "Devbox IP address: $CONTAINERS_IP"
 
 # update the message displayed on the console before login to include the IP address (dynamically) of the container
-echo -e "\nWelcome to your Devbox! The IP address of this container is: \\4" >> /etc/issue
+echo -e "The IP address of this Devbox is: \\4 \n" >> /etc/issue
 
 
 # reboot the container to ensure all changes take effect
