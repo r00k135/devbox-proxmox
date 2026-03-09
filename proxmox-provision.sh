@@ -54,6 +54,8 @@ CONFIG_FILE="/etc/pve/lxc/${CONTAINER_ID}.conf"
     echo "lxc.cap.drop:"
     echo "lxc.cgroup2.devices.allow: c 10:229 rwm"
     echo "lxc.mount.entry: /dev/fuse dev/fuse none bind,create=file"
+    echo "lxc.cgroup2.devices.allow: c 10:200 rwm"
+    echo "lxc.mount.entry: /dev/net/tun dev/net/tun none bind,create=file"
 } >> "$CONFIG_FILE"
 if [ $? -ne 0 ]; then
     echo "Failed to update container config for $CONTAINER_NAME"

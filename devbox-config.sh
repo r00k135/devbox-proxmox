@@ -90,8 +90,33 @@ if [ "$?" -ne 0 ]; then
     exit 1
 fi
 
-# Create a copilot alias for the devbox user which will execute the copilot cli command like so: copilot --allow-tool 'write' --allow-tool 'shell' --deny-tool 'shell(git:*)' --allow-all-paths --allow-all-urls
-echo "alias cli='copilot --allow-tool \"write\" --allow-tool \"shell\" --deny-tool \"shell(git:*)\" --allow-all-paths --allow-all-urls'" >> /home/devbox/.bashrc
+# Create a copilot function for the devbox user.
+cat <<'EOF' >> /home/devbox/.bashrc
+cli() {
+    local continue_flag=""
+    local args=()
+
+    for arg in "$@"; do
+        case "$arg" in
+            --continue)
+                continue_flag="--continue"
+                ;;
+            *)
+                args+=("$arg")
+                ;;
+        esac
+    done
+
+    copilot \
+        --allow-tool "write" \
+        --allow-tool "shell" \
+        --deny-tool "shell(git:*)" \
+        --allow-all-paths \
+        --allow-all-urls \
+        "${args[@]}" \
+        $continue_flag
+}
+EOF
 chown devbox:devbox /home/devbox/.bashrc
 
 # print out the ip address of the container for reference
